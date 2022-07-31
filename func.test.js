@@ -83,3 +83,14 @@ test('Test 1', () => {
 test('Test 2', () => {
   expect(true).toBeTruthy()
 })
+
+
+
+beforeEach(() => {
+    // Чтобы jest ждал выполнение промиса нужно его возвращать
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve("Этот резолвер выполнится перед выполнением теста и пока он не выполнится тест не вызовется")
+      }, 3000)
+    })
+  })
