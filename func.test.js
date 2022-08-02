@@ -84,13 +84,30 @@ test('Test 2', () => {
   expect(true).toBeTruthy()
 })
 
-
-
 beforeEach(() => {
-    // Чтобы jest ждал выполнение промиса нужно его возвращать
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve("Этот резолвер выполнится перед выполнением теста и пока он не выполнится тест не вызовется")
-      }, 3000)
-    })
+  // Чтобы jest ждал выполнение промиса нужно его возвращать
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(
+        'Этот резолвер выполнится перед выполнением теста и пока он не выполнится тест не вызовется'
+      )
+    }, 3000)
   })
+})
+
+test('Тест mock функции ', () => {
+  const mockCallback = jest.fn((x) => 42 + x)
+
+  ;[100, 200].forEach((value) => mockCallback(value))
+
+  // Функция mockCallback была вызвана 2 раза
+  expect(mockCallback.mock.calls.length).toBe(2)
+  // Первый аргумент первого вызова функции mockCallback был: 100
+  expect(mockCallback.mock.calls[0][0]).toBe(100)
+  // Первый аргумент второго вызова функции mockCallback был: 200
+  expect(mockCallback.mock.calls[1][0]).toBe(200)
+  // Результат первого вызова равен 142
+  expect(mockCallback.mock.results[0].value).toBe(142)
+  // Результат второго вызова равен 242
+  expect(mockCallback.mock.results[1].value).toBe(242)
+})
